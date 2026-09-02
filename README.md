@@ -77,9 +77,9 @@ Each example has a compact PNG beside it, compiles without external libraries, a
 
 ## Recommended agent setup
 
-Our current recommendation is the Antigravity 2.0 coding agent with Flash 3.7 at medium reasoning. In our tests, this setup has been unusually good at reading renders and reasoning about spatial changes. On this particular OpenSCAD loop, it has often produced better results than the latest OpenAI and Anthropic models.
+Our current recommendation is the Antigravity 2.0 coding agent with Flash 3.7+ at medium reasoning. In our tests, this setup has been unusually good at reading renders and reasoning about spatial changes. On this particular OpenSCAD loop, it has often produced better results than the latest OpenAI and Anthropic models.
 
-The [ModelRift OpenSCAD LLM benchmark](https://modelrift.com/blog/openscad-llm-benchmark/) shows why the render and inspection loop matters. In that Pantheon test, Antigravity 2.0 with Gemini 3.5 Flash High produced the best autonomous result. A separate human-guided ModelRift run improved on the original autonomous batch by letting the user attach visual feedback to the render. The benchmark predates the Flash 3.7 recommendation above, so treat it as evidence for the workflow rather than a direct comparison of current models.
+The [ModelRift OpenSCAD LLM benchmark](https://modelrift.com/blog/openscad-llm-benchmark/) shows why the render and inspection loop matters. In that Pantheon test, Antigravity 2.0 with Gemini 3.5 Flash High produced the best autonomous result. A separate human-guided ModelRift (with Flash 3.0) run improved on the original autonomous batch by letting the user attach visual feedback to the render. The benchmark predates the Flash 3.7+ recommendation above, so treat it as evidence for the workflow rather than a direct comparison of current models.
 
 This recommendation will age as models change. Whichever agent you use, give it access to the OpenSCAD CLI and an image-viewing tool, and keep a human involved in the review loop.
 
