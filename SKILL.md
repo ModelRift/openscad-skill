@@ -164,5 +164,3 @@ When exporting assemblies for multi-color or multi-part 3D printing in slicers (
 4. **Best Practices**:
    - Use `.stl` files for single-object rendering, slicing, and 2D projection clearance tests.
    - Use `.3mf` files (with `--enable lazy-union`) for exporting multi-part assemblies to slicers.
-
-
