@@ -1,0 +1,4 @@
+interface:
+  display_name: "BOSL2 Modeling"
+  short_description: "Build printable BOSL2 threads, hinges, and parts"
+  default_prompt: "Use $bosl2 to create a printable BOSL2 part with verified geometry and fit."

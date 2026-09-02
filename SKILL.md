@@ -1,6 +1,6 @@
 ---
 name: openscad-preview-and-debug
-description: Use OpenSCAD CLI to render and visually inspect high-quality preview PNGs, select camera settings, export STL and multi-object 3MF files, generate 2D projections and cross-sections, diagnose 3D fit and geometry issues, and expose parameters through the OpenSCAD Customizer. Apply when creating, iterating on, previewing, debugging, or exporting OpenSCAD models.
+description: Use OpenSCAD CLI to render and visually inspect high-quality preview PNGs, compare STL revisions with color-coded diff renders, select camera settings, export STL and multi-object 3MF files, generate 2D projections and cross-sections, diagnose 3D fit and geometry issues, expose parameters through the OpenSCAD Customizer, and route advanced modeling to BOSL2. Apply when creating, iterating on, previewing, debugging, or exporting OpenSCAD models, including requests for BOSL2, printable threads, or hinges.
 ---
 
 # OpenSCAD Preview & Debug Skill
@@ -8,6 +8,16 @@ description: Use OpenSCAD CLI to render and visually inspect high-quality previe
 Generate 3D renders, 2D outlines, and cross-section slices with the OpenSCAD command-line interface (CLI). Import exported meshes when alignment, clearance, or wall-thickness debugging must reflect the compiled output.
 
 Before beginning, run `openscad --version` and confirm the CLI is available. If it is unavailable, report the missing dependency and provide commands the user can run after installing OpenSCAD.
+
+## Optional BOSL2 Companion
+
+Read [the BOSL2 companion skill](optional-skills/bosl2/SKILL.md) before editing whenever the user:
+
+- explicitly asks for BOSL2 or supplies a BOSL2-based model;
+- asks to add internal or external threads, threaded fasteners, nuts, pipe threads, or bottle-cap threads; or
+- asks for a knuckle, living, print-in-place, or snap-lock hinge.
+
+BOSL2's generated documentation contains many pages and a very large example-image set. Keep it out of the default context. Follow the companion skill's search-first workflow and load only the source page and images for the modules being used.
 
 ## Uniform File Naming Conventions
 
@@ -19,6 +29,7 @@ All OpenSCAD iterations and exports must reside in the `./output` folder and adh
     *   Example Isometric Ortho preview: `output/preview.v02.iso-ortho.png`
     *   Example Top Ortho preview: `output/preview.v02.top-ortho.png`
     *   Example Side Ortho preview: `output/preview.v02.side-ortho.png`
+*   **STL Diff Images**: `output/diff.vXX-vYY.[camera-settings].png` (for example, `output/diff.v02-v03.iso-ortho.png`)
 
 *   **Immutable Versions & Editing Rules**:
     *   **Internal Agentic QA Loop**: You are permitted to edit and overwrite the current active version's files (e.g., `out.v02.scad` and its renders) *during* your own inner loop of development and QA testing, before you complete your turn and present the design.
@@ -32,8 +43,9 @@ Before completing a turn and presenting a new design version to the user, you mu
 1. Render the preview images for the current version (e.g. `preview.vXX.*.png`).
 2. Use the environment's image-viewing capability to inspect every generated preview at full useful detail.
 3. If there are any visual issues, rendering artifacts, trenches, flat spots, or corner glitches, edit the code, re-render, and check again.
-4. Repeat this edit-and-render loop until you are completely satisfied with the visual look and geometry manifold metrics of the model.
-5. Only present the version and its files to the user once it passes this visual QA check.
+4. When a previous STL exists, render an STL diff against it and inspect every intended addition and removal.
+5. Repeat this edit-and-render loop until you are completely satisfied with the visual look and geometry manifold metrics of the model.
+6. Only present the version and its files to the user once it passes this visual QA check.
 
 ---
 
@@ -49,8 +61,9 @@ To generate standard previews, use the `openscad` command-line utility. Always c
 | :--- | :--- | :--- |
 | **Isometric (Ortho)** | `--camera=0,0,0,55,0,25,0 --projection=ortho` | **Recommended Default.** Standard technical 3D perspective without distortion. |
 | **Isometric (Persp)** | `--camera=0,0,0,55,0,25,0 --projection=perspective` | A realistic 3D perspective mimicking human eye view. |
-| **Top-Down (Ortho)** | `--camera=0,0,0,90,0,0,0 --projection=ortho` | Plan view, best for checking footprints, lips, and horizontal shapes. |
-| **Side Profile (Ortho)** | `--camera=0,0,0,0,90,0,0 --projection=ortho` | Profile view, best for inspecting heights, gussets, and vertical walls. |
+| **Top-Down (Ortho)** | `--camera=0,0,0,0,0,0,0 --projection=ortho` | Plan view, best for checking footprints, lips, and horizontal shapes. |
+| **Front (Ortho)** | `--camera=0,0,0,90,0,0,0 --projection=ortho` | Front elevation, best for inspecting widths and heights. |
+| **Right (Ortho)** | `--camera=0,0,0,90,0,90,0 --projection=ortho` | Right elevation, best for inspecting depths and heights. |
 
 ### Color Schemes (`--colorscheme`)
 OpenSCAD supports multiple rendering color schemes. Use the appropriate one based on context:
@@ -95,6 +108,19 @@ When working with complex assemblies or verifying exports, export the model to a
     echo 'projection(cut = true) translate([0, 0, -z_slice]) import("output/out.vXX.stl");' | \
     openscad -o output/preview.vXX.cut-z_slice.png --autocenter --viewall --imgsize=800,600 -
     ```
+
+### STL Revision Diff
+
+Use the bundled `scripts/stl_diff.py` tool to render two STL files in their shared coordinate system. Red shows material added in the newer model, blue shows material removed from the older model, and translucent gray shows unchanged volume:
+
+```bash
+python3 /path/to/openscad-skill/scripts/stl_diff.py \
+  output/out.v02.stl output/out.v03.stl \
+  -o output/diff.v02-v03.iso-ortho.png \
+  --view iso
+```
+
+Inspect the PNG with the environment's image-viewing capability. Generate additional `top`, `front`, or `right` views when the isometric render hides a critical change. Treat unexpected red or blue regions as regressions to investigate. The tool performs exact CSG differences, so both meshes must use the same units and coordinate frame; it intentionally does not auto-align them.
 
 ---
 

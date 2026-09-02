@@ -1,4 +1,4 @@
 interface:
   display_name: "OpenSCAD Preview & Debug"
-  short_description: "Render, inspect, debug, and export OpenSCAD models"
-  default_prompt: "Use $openscad-preview-and-debug to render and visually inspect my OpenSCAD model."
+  short_description: "Render, diff, debug, and export OpenSCAD models"
+  default_prompt: "Use $openscad-preview-and-debug to render, compare, and visually inspect my OpenSCAD model."
