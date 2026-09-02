@@ -7,7 +7,7 @@ description: Design, render, inspect, debug, and export parametric CAD models in
 
 Generate 3D renders, 2D outlines, and cross-section slices with the OpenSCAD command-line interface (CLI). Import exported meshes when alignment, clearance, or wall-thickness debugging must reflect the compiled output.
 
-Before beginning, run `openscad --version` and confirm the CLI is available. If it is unavailable, report the missing dependency and provide commands the user can run after installing OpenSCAD.
+Before beginning, run `openscad --version` and confirm the CLI is available. If it is unavailable, report the missing dependency and provide commands the user can run after installing OpenSCAD. OpenSCAD has no `-e` option for evaluating source text; write a `.scad` file or pass source on stdin with `-` as the input filename.
 
 ## Optional BOSL2 Companion
 
@@ -18,6 +18,8 @@ Read [the BOSL2 companion skill](optional-skills/bosl2/SKILL.md) before editing 
 - asks for a knuckle, living, print-in-place, or snap-lock hinge.
 
 BOSL2's generated documentation contains many pages and a very large example-image set. Keep it out of the default context. Follow the companion skill's search-first workflow and load only the source page and images for the modules being used.
+
+Before writing or compiling BOSL2 code, follow the companion skill's installation preflight. Do not assume that loading this skill also installs BOSL2. Continue only after `optional-skills/bosl2/scripts/bosl2_preflight.py` compiles its smoke-test STL successfully.
 
 ## Uniform File Naming Conventions
 
