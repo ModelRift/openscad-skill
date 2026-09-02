@@ -7,7 +7,20 @@ description: Design, render, inspect, debug, and export parametric CAD models in
 
 Generate 3D renders, 2D outlines, and cross-section slices with the OpenSCAD command-line interface (CLI). Import exported meshes when alignment, clearance, or wall-thickness debugging must reflect the compiled output.
 
-Before beginning, run `openscad --version` and confirm the CLI is available. If it is unavailable, report the missing dependency and provide commands the user can run after installing OpenSCAD. OpenSCAD has no `-e` option for evaluating source text; write a `.scad` file or pass source on stdin with `-` as the input filename.
+## Require a Development Snapshot
+
+Use an OpenSCAD `2026.x` development snapshot or newer, not the legacy `2021.01` stable build. This workflow relies on the Manifold backend, lazy union, and newer CLI behavior.
+
+Before modeling, run:
+
+```bash
+openscad --version
+openscad --help 2>&1 | rg -- '--backend|lazy-union'
+```
+
+Require `openscad --version` to report a `2026.x` development snapshot or newer, and require the help output to expose the `Manifold` backend and `lazy-union`. If OpenSCAD is missing, reports `2025.x` or older, or lacks either feature, stop and direct the user to install a current [development snapshot](https://openscad.org/downloads.html#snapshots). Keep the official [GitHub Releases page](https://github.com/openscad/openscad/releases) as the stable-release history; do not mistake an older stable release for the required snapshot. On macOS, the official download page lists `brew install openscad@snapshot`.
+
+After installation, rerun both checks and ensure the shell resolves the new executable. OpenSCAD has no `-e` option for evaluating source text; write a `.scad` file or pass source on stdin with `-` as the input filename.
 
 Reject a build if the OpenSCAD log contains `ERROR:`, `WARNING:`, an assertion failure, an unknown module, a missing include, or an empty top-level object. Do not trust the process exit code alone. Confirm that every requested export exists and is non-empty.
 
@@ -76,8 +89,8 @@ OpenSCAD supports multiple rendering color schemes. Use the appropriate one base
 *   `Solarized`: Sleek blue/grey dark mode look.
 *   `Monotone`: Pure greyscale, ideal for black-and-white print documentation.
 
-### Render Type (Always use `--render`)
-*   **Full Render Mode (`--render`)**: Modern OpenSCAD is fast enough that the full CSG rendering engine should always be used for rendering preview images. Never use the default preview mode (OpenGL "ThrownTogether" rendering) as it frequently causes z-fighting, transparency, and missing surface rendering artifacts.
+### Render Type (Always use Manifold full render)
+*   **Full Render Mode (`--render --backend=Manifold`)**: Use the development snapshot's Manifold backend for rendered preview images and mesh exports. Never use the default preview mode (OpenGL "ThrownTogether" rendering) as it frequently causes z-fighting, transparency, and missing surface rendering artifacts.
 
 ---
 

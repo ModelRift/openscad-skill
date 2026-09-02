@@ -50,15 +50,24 @@ This recommendation will age as models change. Whichever agent you use, give it 
 ## Requirements
 
 - Git
-- OpenSCAD available as `openscad` on `PATH`
+- An OpenSCAD `2026.x` development snapshot or newer, available as `openscad` on `PATH`
 - Python 3 for the STL diff script
+
+The official [GitHub Releases page](https://github.com/openscad/openscad/releases) is the stable-release history; legacy builds such as `2021.01` are too old for this workflow. Install a current build from the official [Development Snapshots section](https://openscad.org/downloads.html#snapshots). On macOS, the official download page also lists:
+
+```bash
+brew install openscad@snapshot
+```
 
 Confirm the local tools before starting:
 
 ```bash
 openscad --version
+openscad --help 2>&1 | rg -- '--backend|lazy-union'
 python3 --version
 ```
+
+The version output must report a `2026.x` development snapshot or newer, and the help output must list the `Manifold` backend and `lazy-union`. If the shell reports `2025.x` or older after installing a snapshot, fix `PATH` so it resolves the new executable before using the skill.
 
 ## Install
 
