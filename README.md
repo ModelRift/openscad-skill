@@ -10,7 +10,13 @@ The hard part is judging the geometry.
 
 Modern LLMs still have limited spatial understanding. They can inspect render images, but often miss details a human notices immediately: an awkward chamfer, an uneven wall, a collision hidden behind another part, a weak hinge, or a clearance that will not print. A clean isometric render can also hide problems that become obvious in a section view or after measuring the part.
 
-This skill is useful for experiments, parametric utilities, and simpler printable models. It can help with more complicated work, but a human should stay in the loop, point out problems, and review the final mesh before printing or manufacturing anything.
+## What this skill is good at
+
+This skill works best for small to moderately complex engineering parts built from measurable geometry: boxes, brackets, adapters, mounts, organizers, enclosures, spacers, and similar models made from flat faces, cylinders, holes, angles, and repeated features. It is most useful when dimensions, wall thickness, clearances, and alignment matter and can be checked in renders, sections, and exported meshes.
+
+It is not a sculpting tool. Characters, figurines, anatomical shapes, decorative organic surfaces, and other freeform work are a poor fit for OpenSCAD and for the edit-render-review loop used here.
+
+Complex assemblies are also outside the skill's reliable range for now. A model can compile and look plausible while parts collide, clearances fail, or a mechanism cannot move through its full range. Use the skill for smaller assemblies only when each moving part can be isolated, sectioned, and collision-checked. A human should still review the final geometry before printing or manufacturing it.
 
 [ModelRift](https://modelrift.com) provides an online OpenSCAD IDE built around that collaboration. It keeps the code and model together and gives the human visual inspection tools, including point-to-point measurement and section cuts. The goal is to make feedback to the LLM more precise than "the shape looks wrong."
 
