@@ -4,7 +4,9 @@ An agent skill for creating, rendering, inspecting, and revising OpenSCAD models
 
 ## Why OpenSCAD works well with LLMs
 
-OpenSCAD is closer to a domain-specific language for geometry than a traditional CAD application. A model is text: primitives, transforms, boolean operations, modules, and parameters. That makes it a good target for an LLM. The agent can edit a file, render it, inspect the result, and make another revision without manipulating hidden scene state.
+OpenSCAD is closer to a domain-specific language for geometry than GUI modeling tools such as FreeCAD or Blender. A model is text: primitives, transforms, boolean operations, modules, and parameters. That makes it a good target for an LLM. The agent can edit a file, render it, inspect the result, and make another revision without manipulating hidden scene state.
+
+FreeCAD and Blender both have MCP integrations, but their larger, stateful interfaces are still harder for LLMs to handle reliably than OpenSCAD's code-and-render loop.
 
 The hard part is judging the geometry.
 
@@ -17,13 +19,13 @@ Modern LLMs still have limited spatial understanding. They can inspect render im
 | Small to moderately complex engineering parts with exact dimensions, angles, holes, walls, and clearances | Sculpted, organic, anatomical, or decorative freeform models |
 | Brackets, adapters, mounts, boxes, enclosures, organizers, and spacers | Complex assemblies with many interacting or moving parts |
 
+## Best practices
+
+For anything intended to be useful, keep a human in the loop. A plausible render can still hide collisions, bad clearances, or a mechanism that cannot move through its full range. The reviewer should check the dimensions and intended function, not just whether the model looks convincing.
+
 Start with a dimensioned sketch when possible. A quick drawing on paper with the important measurements, or a clear reference image, usually gives the agent more useful information than a long text description.
 
-A plausible render can still hide collisions, bad clearances, or a mechanism that cannot move through its full range. Review the final geometry before printing or manufacturing it.
-
-[ModelRift](https://modelrift.com) provides an online OpenSCAD IDE built around that collaboration. It keeps the code and model together and gives the human visual inspection tools, including point-to-point measurement and section cuts. The goal is to make feedback to the LLM more precise than "the shape looks wrong."
-
-The ModelRift browser CAD editor and this skill are separate projects. Neither one requires the other. They do use some similar approaches under the hood, particularly the cycle of generating OpenSCAD, rendering it, inspecting the result, and revising the code.
+When something is wrong, mark it directly on the screenshot. Circle the problem, draw an arrow to the exact feature, and add a short note or target dimension. This gives the model a clear answer to what needs changing and where.
 
 ## What the skill includes
 
@@ -36,6 +38,31 @@ The ModelRift browser CAD editor and this skill are separate projects. Neither o
 - Dependency-free reference parts for mating threads and print-in-place hinges
 
 The main instructions are in [`SKILL.md`](SKILL.md). The STL comparison tool is [`scripts/stl_diff.py`](scripts/stl_diff.py).
+
+## Built with ModelRift
+
+<table>
+  <tr>
+    <td width="50%">
+      <a href="https://modelrift.com/models/neat-clamshell-box-print-in-place-customizable"><img src="assets/showcase/neat-clamshell-box.jpg" alt="Neat clamshell box, open" /></a><br />
+      <a href="https://modelrift.com/models/neat-clamshell-box-print-in-place-customizable">Neat clamshell box. Print-in-place, customizable</a>
+    </td>
+    <td width="50%">
+      <a href="https://modelrift.com/models/eiffel-tower"><img src="assets/showcase/eiffel-tower.jpg" alt="OpenSCAD model of the Eiffel Tower" /></a><br />
+      <a href="https://modelrift.com/models/eiffel-tower">Eiffel Tower</a>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%">
+      <a href="https://modelrift.com/models/interior-layout"><img src="assets/showcase/room-interior-layout.jpg" alt="Room interior layout modeled in OpenSCAD" /></a><br />
+      <a href="https://modelrift.com/models/interior-layout">Room interior layout via AI</a>
+    </td>
+    <td width="50%">
+      <a href="https://modelrift.com/models/desktop-organizer-with-drawer"><img src="assets/showcase/desktop-organizer.jpg" alt="Desktop organizer with an open drawer" /></a><br />
+      <a href="https://modelrift.com/models/desktop-organizer-with-drawer">Desktop Organizer with Drawer</a>
+    </td>
+  </tr>
+</table>
 
 ## Small reference parts instead of a large CAD library
 
@@ -164,4 +191,10 @@ Use modelrift-openscad and its bundled threaded connector reference to add print
 Compare output/out.v03.stl with output/out.v04.stl and render isometric and top STL diff images.
 ```
 
+## When the skill needs more visual feedback
+
 The agent's render is a draft review, not proof that the part is correct. Check dimensions, section cuts, clearances, wall thickness, moving joints, and the exported mesh yourself.
+
+For closer visual inspection, [ModelRift](https://modelrift.com) is a browser-based OpenSCAD IDE that keeps the code and model together. Its tools include point-to-point measurement and section cuts, so a person can give the LLM specific feedback instead of saying only "the shape looks wrong."
+
+The ModelRift editor and this skill are separate projects. Neither requires the other. They use a similar loop: generate OpenSCAD, render it, inspect the result, and revise the code.
