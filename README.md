@@ -14,6 +14,8 @@ This skill is useful for experiments, parametric utilities, and simpler printabl
 
 [ModelRift](https://modelrift.com) provides an online OpenSCAD IDE built around that collaboration. It keeps the code and model together and gives the human visual inspection tools, including point-to-point measurement and section cuts. The goal is to make feedback to the LLM more precise than "the shape looks wrong."
 
+The ModelRift browser CAD editor and this skill are separate projects. Neither one requires the other. They do use some similar approaches under the hood, particularly the cycle of generating OpenSCAD, rendering it, inspecting the result, and revising the code.
+
 ## What the skill includes
 
 - A render, inspect, revise loop with standard isometric and orthographic cameras
@@ -40,6 +42,8 @@ For many models, basic OpenSCAD is still the better choice. It may be more verbo
 
 Our current recommendation is the Antigravity 2.0 coding agent with Flash 3.7 at medium reasoning. In our tests, this setup has been unusually good at reading renders and reasoning about spatial changes. On this particular OpenSCAD loop, it has often produced better results than the latest OpenAI and Anthropic models.
 
+The [ModelRift OpenSCAD LLM benchmark](https://modelrift.com/blog/openscad-llm-benchmark/) shows why the render and inspection loop matters. In that Pantheon test, Antigravity 2.0 with Gemini 3.5 Flash High produced the best autonomous result. A separate human-guided ModelRift run improved on the original autonomous batch by letting the user attach visual feedback to the render. The benchmark predates the Flash 3.7 recommendation above, so treat it as evidence for the workflow rather than a direct comparison of current models.
+
 This recommendation will age as models change. Whichever agent you use, give it access to the OpenSCAD CLI and an image-viewing tool, and keep a human involved in the review loop.
 
 ## Requirements
@@ -56,7 +60,17 @@ openscad --version
 python3 --version
 ```
 
-## Install for Antigravity 2.0
+## Install
+
+The simplest installation method is to give your coding agent this instruction:
+
+```text
+Go to https://github.com/ModelRift/openscad-skill/ and install the skill.
+```
+
+A capable agent can inspect the repository, find its own skill directory, clone the complete package, and verify that `SKILL.md` is discoverable. The manual commands below are available if you prefer to install it yourself.
+
+### Antigravity 2.0
 
 Antigravity discovers global skills under `~/.gemini/config/skills/`. Clone the repository there:
 
@@ -76,7 +90,7 @@ git clone https://github.com/ModelRift/openscad-skill.git \
   .agents/skills/openscad
 ```
 
-## Install for Codex
+### Codex
 
 Codex discovers personal skills under `~/.agents/skills/`:
 
@@ -88,7 +102,7 @@ git clone https://github.com/ModelRift/openscad-skill.git \
 
 For a repository-scoped installation, clone it into `.agents/skills/openscad` at the repository root. Codex normally detects skill changes automatically. Restart it if the skill does not appear. See the official [Codex skill documentation](https://developers.openai.com/codex/skills) for discovery rules and invocation details.
 
-## Install for another compatible agent
+### Another compatible agent
 
 Clone the complete repository into the agent's skill directory. Keep the repository structure intact because the root skill links to the BOSL2 companion, reference files, and scripts by relative path. If the agent does not have automatic skill discovery, point it directly to `SKILL.md`.
 
