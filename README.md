@@ -12,11 +12,14 @@ Modern LLMs still have limited spatial understanding. They can inspect render im
 
 ## What this skill is good at
 
-This skill works best for small to moderately complex engineering parts built from measurable geometry: boxes, brackets, adapters, mounts, organizers, enclosures, spacers, and similar models made from flat faces, cylinders, holes, angles, and repeated features. It is most useful when dimensions, wall thickness, clearances, and alignment matter and can be checked in renders, sections, and exported meshes.
+| ✅ Good fit | ❌ Poor fit |
+| --- | --- |
+| Small to moderately complex engineering parts with exact dimensions, angles, holes, walls, and clearances | Sculpted, organic, anatomical, or decorative freeform models |
+| Brackets, adapters, mounts, boxes, enclosures, organizers, and spacers | Complex assemblies with many interacting or moving parts |
 
-It is not a sculpting tool. Characters, figurines, anatomical shapes, decorative organic surfaces, and other freeform work are a poor fit for OpenSCAD and for the edit-render-review loop used here.
+Start with a dimensioned sketch when possible. A quick drawing on paper with the important measurements, or a clear reference image, usually gives the agent more useful information than a long text description.
 
-Complex assemblies are also outside the skill's reliable range for now. A model can compile and look plausible while parts collide, clearances fail, or a mechanism cannot move through its full range. Use the skill for smaller assemblies only when each moving part can be isolated, sectioned, and collision-checked. A human should still review the final geometry before printing or manufacturing it.
+A plausible render can still hide collisions, bad clearances, or a mechanism that cannot move through its full range. Review the final geometry before printing or manufacturing it.
 
 [ModelRift](https://modelrift.com) provides an online OpenSCAD IDE built around that collaboration. It keeps the code and model together and gives the human visual inspection tools, including point-to-point measurement and section cuts. The goal is to make feedback to the LLM more precise than "the shape looks wrong."
 
