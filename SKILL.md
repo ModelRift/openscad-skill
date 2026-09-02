@@ -1,6 +1,6 @@
 ---
 name: modelrift-openscad
-description: Design, render, inspect, debug, and export parametric CAD models in OpenSCAD for 3D-printable parts. Use OpenSCAD CLI to create preview PNGs, compare STL revisions, select cameras, export STL and multi-object 3MF files, generate projections and cross-sections, diagnose fit and geometry issues, expose Customizer parameters, and route advanced modeling to BOSL2. Apply to OpenSCAD part design and iteration, including requests for printable threads, hinges, assemblies, or BOSL2.
+description: Design, render, inspect, debug, and export parametric CAD models in OpenSCAD for 3D-printable parts. Use OpenSCAD CLI to create preview PNGs, compare STL revisions, select cameras, export STL and multi-object 3MF files, generate projections and cross-sections, diagnose fit and geometry issues, expose Customizer parameters, and adapt bundled reference parts for printable threads and hinges. Apply to OpenSCAD part design and iteration, including threaded connectors, moving assemblies, and print-in-place hinges.
 ---
 
 # ModelRift OpenSCAD Skill
@@ -9,17 +9,18 @@ Generate 3D renders, 2D outlines, and cross-section slices with the OpenSCAD com
 
 Before beginning, run `openscad --version` and confirm the CLI is available. If it is unavailable, report the missing dependency and provide commands the user can run after installing OpenSCAD. OpenSCAD has no `-e` option for evaluating source text; write a `.scad` file or pass source on stdin with `-` as the input filename.
 
-## Optional BOSL2 Companion
+Reject a build if the OpenSCAD log contains `ERROR:`, `WARNING:`, an assertion failure, an unknown module, a missing include, or an empty top-level object. Do not trust the process exit code alone. Confirm that every requested export exists and is non-empty.
 
-Read [the BOSL2 companion skill](optional-skills/bosl2/SKILL.md) before editing whenever the user:
+## Bundled Reference Parts
 
-- explicitly asks for BOSL2 or supplies a BOSL2-based model;
-- asks to add internal or external threads, threaded fasteners, nuts, pipe threads, or bottle-cap threads; or
-- asks for a knuckle, living, print-in-place, or snap-lock hinge.
+Use these dependency-free examples as known-good starting points:
 
-BOSL2's generated documentation contains many pages and a very large example-image set. Keep it out of the default context. Follow the companion skill's search-first workflow and load only the source page and images for the modules being used.
+- For mating internal and external threads, inspect [the threaded connector source](assets/reference-parts/threaded-connector.scad) and [its compact preview](assets/reference-parts/threaded-connector.png).
+- For a print-in-place knuckle hinge, inspect [the hinge source](assets/reference-parts/print-in-place-hinge.scad) and [its compact preview](assets/reference-parts/print-in-place-hinge.png).
 
-Before writing or compiling BOSL2 code, follow the companion skill's installation preflight. Do not assume that loading this skill also installs BOSL2. Continue only after `optional-skills/bosl2/scripts/bosl2_preflight.py` compiles its smoke-test STL successfully.
+Compile the selected example unchanged before adapting it. Copy only the relevant modules into the user's versioned source; do not rewrite unrelated geometry merely to use an example. Keep fit clearance, printer tolerance, layer height, nozzle width, material, and print orientation explicit.
+
+For threaded parts, export a short male/female fit coupon before a large part. For hinges, render the print position and at least 45°, 90°, and closed states around the actual hinge axis. Export the two moving parts separately and use `intersection()` at every state; any unintended solid intersection fails QA. A manifold export proves mesh validity, not fit or motion.
 
 ## Uniform File Naming Conventions
 

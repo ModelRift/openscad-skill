@@ -1,6 +1,6 @@
 # ModelRift OpenSCAD skill
 
-An agent skill for creating, rendering, inspecting, and revising OpenSCAD models. It gives coding agents a repeatable visual QA loop, versioned output conventions, cross-section tools, STL revision diffs, and optional BOSL2 guidance.
+An agent skill for creating, rendering, inspecting, and revising OpenSCAD models. It gives coding agents a repeatable visual QA loop, versioned output conventions, cross-section tools, STL revision diffs, and compact reference parts for common printable mechanisms.
 
 ## Why OpenSCAD works well with LLMs
 
@@ -24,19 +24,20 @@ The ModelRift browser CAD editor and this skill are separate projects. Neither o
 - A color-coded STL diff renderer: red is added material, blue is removed material, and gray is unchanged volume
 - OpenSCAD Customizer conventions
 - Multi-object 3MF export with lazy union
-- An optional BOSL2 companion for advanced geometry, threads, and hinges
+- Dependency-free reference parts for mating threads and print-in-place hinges
 
 The main instructions are in [`SKILL.md`](SKILL.md). The STL comparison tool is [`scripts/stl_diff.py`](scripts/stl_diff.py).
 
-## BOSL2: powerful, but expensive in context
+## Small reference parts instead of a large CAD library
 
-[BOSL2](https://github.com/BelfrySCAD/BOSL2) adds a large set of modeling tools to OpenSCAD. It can produce excellent chamfers and roundovers, printable threads, hinges, joinery, and other geometry that would take much more code to build by hand. Its attachment system is particularly useful for placing primitives and subassemblies relative to one another instead of maintaining a long chain of coordinates.
+Threads and hinges are useful enough to deserve concrete examples, but they are also easy for an agent to get almost right. A plausible render does not prove that threads will mate or that a hinge can move without fused or intersecting parts.
 
-That power comes with a large API, extensive documentation, and many rendered examples. Loading too much of it can consume a substantial part of an LLM's context. BOSL2 attachment code can also take several attempts to get right because the agent needs to understand anchors, orientation, clearances, and the resulting render at the same time.
+The skill therefore includes two small, standalone OpenSCAD models:
 
-The included [BOSL2 companion](optional-skills/bosl2/SKILL.md) uses progressive disclosure. It routes the agent to the relevant source and documentation instead of loading the whole library. Threads and hinges receive dedicated guidance because they are among the most useful reasons to reach for BOSL2.
+- [`threaded-connector.scad`](assets/reference-parts/threaded-connector.scad) contains mating male and female helical threads with an explicit fit clearance.
+- [`print-in-place-hinge.scad`](assets/reference-parts/print-in-place-hinge.scad) contains a five-segment hinge with a continuous faceted pin and printable radial clearance.
 
-For many models, basic OpenSCAD is still the better choice. It may be more verbose, but agents usually need less documentation, spend less quota on context, and make fewer mistakes involving attachment semantics. Use BOSL2 when it removes genuinely difficult geometry or assembly work, not simply because it is available.
+Each example has a compact PNG beside it, compiles without external libraries, and is intended to be tested unchanged before the relevant modules are adapted. The hinge is collision-checked at 0, 45, 90, and 180 degrees. The thread pair is boolean-checked to ensure the male solid does not intersect the female body at the configured clearance. These checks establish a useful starting point, not a guarantee for a particular printer or material; print a fit coupon before committing to a large part.
 
 ## Recommended agent setup
 
@@ -51,7 +52,6 @@ This recommendation will age as models change. Whichever agent you use, give it 
 - Git
 - OpenSCAD available as `openscad` on `PATH`
 - Python 3 for the STL diff script
-- BOSL2 only when a model uses the optional BOSL2 workflow
 
 Confirm the local tools before starting:
 
@@ -104,7 +104,7 @@ For a repository-scoped installation, clone it into `.agents/skills/modelrift-op
 
 ### Another compatible agent
 
-Clone the complete repository into the agent's skill directory. Keep the repository structure intact because the root skill links to the BOSL2 companion, reference files, and scripts by relative path. If the agent does not have automatic skill discovery, point it directly to `SKILL.md`.
+Clone the complete repository into the agent's skill directory. Keep the repository structure intact because the root skill links to reference parts, preview images, and scripts by relative path. If the agent does not have automatic skill discovery, point it directly to `SKILL.md`.
 
 ## Update
 
@@ -139,7 +139,7 @@ Use modelrift-openscad to build a parametric wall bracket. Render and inspect it
 ```
 
 ```text
-Use modelrift-openscad and the BOSL2 companion to add printable internal and external threads. Make a small fit coupon first.
+Use modelrift-openscad and its bundled threaded connector reference to add printable internal and external threads. Make a small fit coupon first.
 ```
 
 ```text
