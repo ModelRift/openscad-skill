@@ -1,9 +1,9 @@
 ---
-name: openscad-preview-and-debug
-description: Use OpenSCAD CLI to render and visually inspect high-quality preview PNGs, compare STL revisions with color-coded diff renders, select camera settings, export STL and multi-object 3MF files, generate 2D projections and cross-sections, diagnose 3D fit and geometry issues, expose parameters through the OpenSCAD Customizer, and route advanced modeling to BOSL2. Apply when creating, iterating on, previewing, debugging, or exporting OpenSCAD models, including requests for BOSL2, printable threads, or hinges.
+name: modelrift-openscad
+description: Design, render, inspect, debug, and export parametric CAD models in OpenSCAD for 3D-printable parts. Use OpenSCAD CLI to create preview PNGs, compare STL revisions, select cameras, export STL and multi-object 3MF files, generate projections and cross-sections, diagnose fit and geometry issues, expose Customizer parameters, and route advanced modeling to BOSL2. Apply to OpenSCAD part design and iteration, including requests for printable threads, hinges, assemblies, or BOSL2.
 ---
 
-# OpenSCAD Preview & Debug Skill
+# ModelRift OpenSCAD Skill
 
 Generate 3D renders, 2D outlines, and cross-section slices with the OpenSCAD command-line interface (CLI). Import exported meshes when alignment, clearance, or wall-thickness debugging must reflect the compiled output.
 
@@ -114,7 +114,7 @@ When working with complex assemblies or verifying exports, export the model to a
 Use the bundled `scripts/stl_diff.py` tool to render two STL files in their shared coordinate system. Red shows material added in the newer model, blue shows material removed from the older model, and translucent gray shows unchanged volume:
 
 ```bash
-python3 /path/to/openscad-skill/scripts/stl_diff.py \
+python3 /path/to/modelrift-openscad/scripts/stl_diff.py \
   output/out.v02.stl output/out.v03.stl \
   -o output/diff.v02-v03.iso-ortho.png \
   --view iso

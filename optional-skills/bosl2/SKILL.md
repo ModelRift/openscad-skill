@@ -5,7 +5,7 @@ description: Use BOSL2, the Belfry OpenSCAD Library v2, for attachment-aware par
 
 # BOSL2 Modeling
 
-Use this optional companion with the parent OpenSCAD preview-and-debug skill. BOSL2 is large and evolves quickly; confirm every module signature against the installed library version instead of relying on memory.
+Use this optional companion with the parent ModelRift OpenSCAD skill. BOSL2 is large and evolves quickly; confirm every module signature against the installed library version instead of relying on memory.
 
 ## Resolve the Library and Documentation
 

@@ -77,7 +77,7 @@ Antigravity discovers global skills under `~/.gemini/config/skills/`. Clone the 
 ```bash
 mkdir -p ~/.gemini/config/skills
 git clone https://github.com/ModelRift/openscad-skill.git \
-  ~/.gemini/config/skills/openscad
+  ~/.gemini/config/skills/modelrift-openscad
 ```
 
 Start a new conversation after installation. If the skill does not appear, restart Antigravity. The official [Antigravity skill documentation](https://antigravity.google/docs/skills) also describes workspace-scoped installation.
@@ -87,7 +87,7 @@ To install the skill for one project instead, run this from the project root:
 ```bash
 mkdir -p .agents/skills
 git clone https://github.com/ModelRift/openscad-skill.git \
-  .agents/skills/openscad
+  .agents/skills/modelrift-openscad
 ```
 
 ### Codex
@@ -97,10 +97,10 @@ Codex discovers personal skills under `~/.agents/skills/`:
 ```bash
 mkdir -p ~/.agents/skills
 git clone https://github.com/ModelRift/openscad-skill.git \
-  ~/.agents/skills/openscad
+  ~/.agents/skills/modelrift-openscad
 ```
 
-For a repository-scoped installation, clone it into `.agents/skills/openscad` at the repository root. Codex normally detects skill changes automatically. Restart it if the skill does not appear. See the official [Codex skill documentation](https://developers.openai.com/codex/skills) for discovery rules and invocation details.
+For a repository-scoped installation, clone it into `.agents/skills/modelrift-openscad` at the repository root. Codex normally detects skill changes automatically. Restart it if the skill does not appear. See the official [Codex skill documentation](https://developers.openai.com/codex/skills) for discovery rules and invocation details.
 
 ### Another compatible agent
 
@@ -111,21 +111,35 @@ Clone the complete repository into the agent's skill directory. Keep the reposit
 Use the path from your installation:
 
 ```bash
-git -C ~/.gemini/config/skills/openscad pull --ff-only
+git -C ~/.gemini/config/skills/modelrift-openscad pull --ff-only
 ```
 
-For Codex, replace the path with `~/.agents/skills/openscad`.
+For Codex, use `~/.agents/skills/modelrift-openscad`.
+
+If you installed an earlier version under an `openscad` folder, rename it once so it matches the new skill identifier. Use the command for your agent:
+
+```bash
+# Antigravity
+mv ~/.gemini/config/skills/openscad \
+  ~/.gemini/config/skills/modelrift-openscad
+
+# Codex
+mv ~/.agents/skills/openscad \
+  ~/.agents/skills/modelrift-openscad
+```
+
+Then use the new path for future updates.
 
 ## Use the skill
 
 The agent can activate the skill automatically when a task involves OpenSCAD rendering, debugging, export, threads, or hinges. You can also name it explicitly:
 
 ```text
-Use openscad-preview-and-debug to build a parametric wall bracket. Render and inspect it before showing me the final version.
+Use modelrift-openscad to build a parametric wall bracket. Render and inspect it before showing me the final version.
 ```
 
 ```text
-Use openscad-preview-and-debug and the BOSL2 companion to add printable internal and external threads. Make a small fit coupon first.
+Use modelrift-openscad and the BOSL2 companion to add printable internal and external threads. Make a small fit coupon first.
 ```
 
 ```text
